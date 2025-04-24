@@ -1,11 +1,11 @@
 provider "aws" {
-  region = "us-east-1" # Change to your region
+  region = "us-east-1" 
 }
 
 resource "aws_instance" "web" {
-  ami           = "ami-0c2b8ca1dad447f8a" # Amazon Linux 2 AMI (check for your region)
+  ami           = "ami-0c2b8ca1dad447f8a"
   instance_type = "t2.micro"
-  key_name      = "Ec2-tutorial" # Replace with your key pair name
+  key_name      = "Ec2-tutorial" 
 
   user_data = <<-EOF
               #!/bin/bash
@@ -64,7 +64,7 @@ resource "aws_sns_topic" "alarm_topic" {
 resource "aws_sns_topic_subscription" "email_alert" {
   topic_arn = aws_sns_topic.alarm_topic.arn
   protocol  = "email"
-  endpoint  = "subhagankiran21@gmail.com" # Change this to your actual email
+  endpoint  = "subhagan*******@gmail.com" 
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_high" {

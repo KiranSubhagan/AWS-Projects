@@ -26,12 +26,15 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: MonitoringSetup/
 
       - name: Terraform Format Check
         run: terraform fmt -check
+        working-directory: MonitoringSetup/
 
       - name: Terraform Plan
         run: terraform plan
+        working-directory: MonitoringSetup/
 
       # Optional: Apply (Enable only with caution!)
       - name: Terraform Apply

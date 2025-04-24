@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_instance" "web" {
   ami           = "ami-0c2b8ca1dad447f8a" # Amazon Linux 2 AMI (check for your region)
   instance_type = "t2.micro"
-  key_name      = "your-key-name" # Replace with your key pair name
+  key_name      = "Ec2-tutorial" # Replace with your key pair name
 
   user_data = <<-EOF
               #!/bin/bash

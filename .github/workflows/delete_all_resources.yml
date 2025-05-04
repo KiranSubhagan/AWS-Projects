@@ -1,1 +1,41 @@
 
+
+name: Delete All EC2 and S3 Resources
+
+on:
+  schedule:
+    - cron: '0 3 * * *'     # Runs daily at 3 AM UTC
+  workflow_dispatch:         # Optional: manual trigger
+
+jobs:
+  delete-resources:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Delete All EC2 Instances
+        run: |
+          INSTANCE_IDS=$(aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].InstanceId' \
+            --output text)
+          if [ -n "$INSTANCE_IDS" ]; then
+            echo "Terminating EC2 instances: $INSTANCE_IDS"
+            aws ec2 terminate-instances --instance-ids $INSTANCE_IDS
+          else
+            echo "No EC2 instances to terminate."
+          fi
+
+      - name: Delete All S3 Buckets
+        run: |
+          BUCKETS=$(aws s3api list-buckets --query 'Buckets[].Name' --output text)
+          for BUCKET in $BUCKETS; do
+            echo "Emptying and deleting bucket: $BUCKET"
+            aws s3 rm s3://$BUCKET --recursive || true
+            aws s3api delete-bucket --bucket $BUCKET || true
+          done

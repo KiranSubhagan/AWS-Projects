@@ -2,7 +2,7 @@ name: Delete All EC2 and S3 Resources
 
 on:
   schedule:
-    - cron: '0 3 * * *'     
+    - cron: '00 00 * * *'     
   workflow_dispatch:         
 
 jobs:

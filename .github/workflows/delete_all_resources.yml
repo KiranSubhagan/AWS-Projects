@@ -23,17 +23,17 @@ jobs:
             --query 'Reservations[*].Instances[*].InstanceId' \
             --output text)
           if [ -n "$INSTANCE_IDS" ]; then
-            echo "Terminating EC2 instances: $INSTANCE_IDS"
+            echo "Terminating EC2 instances that cost me money: $INSTANCE_IDS"
             aws ec2 terminate-instances --instance-ids $INSTANCE_IDS
           else
-            echo "No EC2 instances to terminate."
+            echo "oops No EC2 instances to terminate. chao!"
           fi
 
       - name: Delete All S3 Buckets
         run: |
           BUCKETS=$(aws s3api list-buckets --query 'Buckets[].Name' --output text)
           for BUCKET in $BUCKETS; do
-            echo "Emptying and deleting bucket: $BUCKET"
+            echo "Emptying and deleting bucket that costs me dollars: $BUCKET"
             aws s3 rm s3://$BUCKET --recursive || true
             aws s3api delete-bucket --bucket $BUCKET || true
           done
